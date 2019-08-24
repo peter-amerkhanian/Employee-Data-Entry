@@ -26,8 +26,10 @@ public class Driver {
 //            employees.add(employee);
 //        }
 //        System.out.println(employees.toString());
-        JFrame windows = new FirstSwingWindow();
+        FirstSwingWindow windows = new FirstSwingWindow();
         windows.setVisible(true);
+        System.out.println(windows.getEmployeeCount());
+        System.out.println(windows.getEmployees().toString());
 
 
     }

@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class FirstSwingWindow extends JFrame implements ActionListener {
 
@@ -12,10 +13,13 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
     private JTextField hours;
     private JLabel currentEmployee;
     private int employeeCount = 1;
+    private ArrayList employees = new ArrayList();
+//    private int totalEmployeeCount = 1;
+    private int totalEmployeeCount = (int)Integer.parseInt(JOptionPane.showInputDialog("How many employees' data will you be entering?"));
 
     public FirstSwingWindow() {
         super();
-        setTitle("First Window");
+        setTitle("Employee Spreadsheet Creator");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -55,7 +59,7 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
         buttonPane5.setBackground(Color.LIGHT_GRAY);
         JButton enter = new JButton("Enter");
         enter.addActionListener(this);
-        currentEmployee = new JLabel(String.format("Employee %s of 12", employeeCount));
+        currentEmployee = new JLabel(String.format("Employee %s of %s", employeeCount, totalEmployeeCount));
         buttonPane5.add(enter);
         buttonPane5.add(currentEmployee);
 
@@ -64,23 +68,26 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
         content.add(buttonPane3);
         content.add(buttonPane4);
         content.add(buttonPane5);
-
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Enter")) {
-            String message = new Employee(
-                    name.getText(),
-                    Integer.parseInt(age.getText()),
-                    Double.parseDouble(hourlySalary.getText()),
-                    Double.parseDouble(hours.getText())).toString();
-            JOptionPane.showMessageDialog(null, message);
-            employeeCount ++;
-            currentEmployee.setText(String.format("Employee %s of 12", employeeCount));
-            name.setText("");
-            age.setText("");
-            hourlySalary.setText("");
-            hours.setText("");
+                Employee newEmployee = new Employee(
+                        name.getText(),
+                        Integer.parseInt(age.getText()),
+                        Double.parseDouble(hourlySalary.getText()),
+                        Double.parseDouble(hours.getText()));
+                employees.add(newEmployee);
+                employeeCount++;
+                JOptionPane.showMessageDialog(null, newEmployee.toString());
+                clear();
+            if (employeeCount > totalEmployeeCount) {
+                JOptionPane.showMessageDialog(null, "<html><p>All employees successfully entered!</p><p>Results have been exported</p></html>");
+                dispose();
+            }
+            else {
+                currentEmployee.setText(String.format("Employee %s of %s", employeeCount, totalEmployeeCount));
+            }
         }
         else {
             System.out.println("Button Error");
@@ -88,4 +95,18 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
 
     }
 
+    public void clear() {
+        name.setText(null);
+        age.setText(null);
+        hourlySalary.setText(null);
+        hours.setText(null);
+    }
+
+    public int getEmployeeCount() {
+        return employeeCount;
+    }
+
+    public ArrayList getEmployees() {
+        return employees;
+    }
 }
