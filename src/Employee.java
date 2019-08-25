@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.util.ArrayList;
+
 /**
  * A subclass of Person that represents an Employee
  */
@@ -94,5 +97,25 @@ public class Employee extends Person {
         Employee employee = (Employee) o;
         return Double.compare(employee.getHourlySalary(), this.getHourlySalary()) == 0 &&
                 Double.compare(employee.getHours(), this.getHours()) == 0;
+    }
+
+    public static void printSalaryReport(ArrayList<Employee> employees) {
+        String report = "Employee Name, Salary, Hours, Weekly Pay\n";
+        System.out.println(report);
+        for (Employee employee: employees) {
+            Double weeklyPay = employee.getHourlySalary() * employee.getHours();
+            String s = "%s, %s, %s, %s\n";
+            String row = String.format(s, employee.getName(), employee.getHourlySalary(), employee.getHours(), weeklyPay);
+            System.out.println(row);
+            report += row;
+        }
+        try {
+            FileWriter fw = new FileWriter("employee.csv");
+            fw.write(report);
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        System.out.println(".csv successfully created!");
     }
 }

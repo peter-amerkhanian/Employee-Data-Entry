@@ -86,7 +86,9 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
                 clear();
             if (employeeCount > totalEmployeeCount) {
                 JOptionPane.showMessageDialog(null, "<html><p>All employees successfully entered!</p><p>Results have been exported</p></html>");
+                Employee.printSalaryReport(employees);
                 dispose();
+
             }
             else {
                 currentEmployee.setText(String.format("Employee %s of %s", employeeCount, totalEmployeeCount));
