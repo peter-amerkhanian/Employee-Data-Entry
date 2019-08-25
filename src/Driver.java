@@ -28,8 +28,6 @@ public class Driver {
 //        System.out.println(employees.toString());
         FirstSwingWindow windows = new FirstSwingWindow();
         windows.setVisible(true);
-        System.out.println(windows.getEmployeeCount());
-        System.out.println(windows.getEmployees().toString());
 
 
     }

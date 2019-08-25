@@ -4,7 +4,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class FirstSwingWindow extends JFrame implements ActionListener {
-
     private static final int WIDTH = 400;
     private static final int HEIGHT = 600;
     private JTextField name;
@@ -13,9 +12,8 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
     private JTextField hours;
     private JLabel currentEmployee;
     private int employeeCount = 1;
+    private int totalEmployeeCount;
     private ArrayList employees = new ArrayList();
-//    private int totalEmployeeCount = 1;
-    private int totalEmployeeCount = (int)Integer.parseInt(JOptionPane.showInputDialog("How many employees' data will you be entering?"));
 
     public FirstSwingWindow() {
         super();
@@ -26,6 +24,8 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
         Container content = getContentPane();
         content.setLayout(new GridLayout(5,1));
         content.setBackground(Color.WHITE);
+
+        totalEmployeeCount = Integer.parseInt(JOptionPane.showInputDialog("How many employees' data will you be entering?"));
 
         JPanel buttonPane1 = new JPanel();
         buttonPane1.setBackground(Color.LIGHT_GRAY);
@@ -59,8 +59,11 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
         buttonPane5.setBackground(Color.LIGHT_GRAY);
         JButton enter = new JButton("Enter");
         enter.addActionListener(this);
+        JButton clear = new JButton("Clear");
+        clear.addActionListener(this);
         currentEmployee = new JLabel(String.format("Employee %s of %s", employeeCount, totalEmployeeCount));
         buttonPane5.add(enter);
+        buttonPane5.add(clear);
         buttonPane5.add(currentEmployee);
 
         content.add(buttonPane1);
@@ -89,6 +92,9 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
                 currentEmployee.setText(String.format("Employee %s of %s", employeeCount, totalEmployeeCount));
             }
         }
+        else if (e.getActionCommand().equals("Clear")) {
+            clear();
+        }
         else {
             System.out.println("Button Error");
         }
@@ -96,17 +102,9 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
     }
 
     public void clear() {
-        name.setText(null);
-        age.setText(null);
-        hourlySalary.setText(null);
-        hours.setText(null);
-    }
-
-    public int getEmployeeCount() {
-        return employeeCount;
-    }
-
-    public ArrayList getEmployees() {
-        return employees;
+        this.name.setText(null);
+        this.age.setText(null);
+        this.hourlySalary.setText(null);
+        this.hours.setText(null);
     }
 }
