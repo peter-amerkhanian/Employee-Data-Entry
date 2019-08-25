@@ -13,7 +13,7 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
     private JLabel currentEmployee;
     private int employeeCount = 1;
     private int totalEmployeeCount;
-    private ArrayList employees = new ArrayList();
+    private ArrayList<Employee> employees = new ArrayList<>();
 
     public FirstSwingWindow() {
         super();
@@ -22,10 +22,29 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Container content = getContentPane();
-        content.setLayout(new GridLayout(5,1));
+        content.setLayout(new GridLayout(4,1));
         content.setBackground(Color.WHITE);
 
-        totalEmployeeCount = Integer.parseInt(JOptionPane.showInputDialog("How many employees' data will you be entering?"));
+        JOptionPane in = new JOptionPane();
+        while (true) {
+            String strResponse = in.showInputDialog(
+                    null,
+                    "How many employees will you be entering?",
+                    "Employee Spreadsheet Creator",
+                    JOptionPane.INFORMATION_MESSAGE);
+            if (strResponse != null) {
+                try {
+                    totalEmployeeCount = Integer.parseInt(strResponse);
+                    break;
+                } catch (Exception NumberFormatException) {
+                    JOptionPane.showMessageDialog(
+                            null, "Incorrect Input Format. Please enter a positive, non-zero number, i.e. 4");
+                }
+            }
+            else {
+                System.exit(0);
+            }
+        }
 
         JPanel buttonPane1 = new JPanel();
         buttonPane1.setBackground(Color.LIGHT_GRAY);
@@ -36,57 +55,48 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
 
         JPanel buttonPane2 = new JPanel();
         buttonPane2.setBackground(Color.WHITE);
-        JLabel ageLabel = new JLabel("Age: ");
-        age = new JTextField(8);
-        buttonPane2.add(ageLabel);
-        buttonPane2.add(age);
+        JLabel hourlySalaryLabel = new JLabel("Hourly Salary: ");
+        hourlySalary = new JTextField(8);
+        buttonPane2.add(hourlySalaryLabel);
+        buttonPane2.add(hourlySalary);
 
         JPanel buttonPane3 = new JPanel();
         buttonPane3.setBackground(Color.LIGHT_GRAY);
-        JLabel hourlySalaryLabel = new JLabel("Hourly Salary: ");
-        hourlySalary = new JTextField(8);
-        buttonPane3.add(hourlySalaryLabel);
-        buttonPane3.add(hourlySalary);
+        JLabel hoursLabel = new JLabel("Hours Worked: ");
+        hours = new JTextField(8);
+        buttonPane3.add(hoursLabel);
+        buttonPane3.add(hours);
 
         JPanel buttonPane4 = new JPanel();
         buttonPane4.setBackground(Color.WHITE);
-        JLabel hoursLabel = new JLabel("Hours Worked: ");
-        hours = new JTextField(8);
-        buttonPane4.add(hoursLabel);
-        buttonPane4.add(hours);
-
-        JPanel buttonPane5 = new JPanel();
-        buttonPane5.setBackground(Color.LIGHT_GRAY);
         JButton enter = new JButton("Enter");
         enter.addActionListener(this);
         JButton clear = new JButton("Clear");
         clear.addActionListener(this);
-        currentEmployee = new JLabel(String.format("Employee %s of %s", employeeCount, totalEmployeeCount));
-        buttonPane5.add(enter);
-        buttonPane5.add(clear);
-        buttonPane5.add(currentEmployee);
+        currentEmployee = new JLabel(String.format("(Employee %s of %s)", employeeCount, totalEmployeeCount));
+        buttonPane4.add(enter);
+        buttonPane4.add(clear);
+        buttonPane4.add(currentEmployee);
 
         content.add(buttonPane1);
         content.add(buttonPane2);
         content.add(buttonPane3);
         content.add(buttonPane4);
-        content.add(buttonPane5);
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Enter")) {
                 Employee newEmployee = new Employee(
                         name.getText(),
-                        Integer.parseInt(age.getText()),
+                        0,
                         Double.parseDouble(hourlySalary.getText()),
                         Double.parseDouble(hours.getText()));
                 employees.add(newEmployee);
                 employeeCount++;
-                JOptionPane.showMessageDialog(
-                        null, String.format("Entry created for %s.", newEmployee.getName()));
                 clear();
             if (employeeCount > totalEmployeeCount) {
-                JOptionPane.showMessageDialog(null, "<html><p>All employees successfully entered!</p><p>Results have been exported</p></html>");
+                JOptionPane.showMessageDialog(null, "All employees successfully entered!\n" +
+                        "Results have been exported to employee.csv");
                 Employee.printSalaryReport(employees);
                 dispose();
 
@@ -104,9 +114,8 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
 
     }
 
-    public void clear() {
+    private void clear() {
         this.name.setText(null);
-        this.age.setText(null);
         this.hourlySalary.setText(null);
         this.hours.setText(null);
     }

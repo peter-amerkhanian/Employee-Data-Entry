@@ -101,12 +101,13 @@ public class Employee extends Person {
 
     public static void printSalaryReport(ArrayList<Employee> employees) {
         String report = "Employee Name, Salary, Hours, Weekly Pay\n";
-        System.out.println(report);
+        System.out.print(report);
         for (Employee employee: employees) {
             Double weeklyPay = employee.getHourlySalary() * employee.getHours();
             String s = "%s, %s, %s, %s\n";
-            String row = String.format(s, employee.getName(), employee.getHourlySalary(), employee.getHours(), weeklyPay);
-            System.out.println(row);
+            String row = String.format(
+                    s, employee.getName(), employee.getHourlySalary(), employee.getHours(), weeklyPay);
+            System.out.print(row);
             report += row;
         }
         try {
@@ -116,6 +117,6 @@ public class Employee extends Person {
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println(".csv successfully created!");
+        System.out.println("\n.csv successfully created!");
     }
 }
