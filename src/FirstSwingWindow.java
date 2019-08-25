@@ -82,7 +82,8 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
                         Double.parseDouble(hours.getText()));
                 employees.add(newEmployee);
                 employeeCount++;
-                JOptionPane.showMessageDialog(null, newEmployee.toString());
+                JOptionPane.showMessageDialog(
+                        null, String.format("Entry created for %s.", newEmployee.getName()));
                 clear();
             if (employeeCount > totalEmployeeCount) {
                 JOptionPane.showMessageDialog(null, "<html><p>All employees successfully entered!</p><p>Results have been exported</p></html>");
