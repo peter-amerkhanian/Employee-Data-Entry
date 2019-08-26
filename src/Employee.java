@@ -40,16 +40,18 @@ public class Employee extends Person {
      *
      * @param hours the new number of hours worked for the employee
      */
-    public void setHours(double hours) {
+    public void setHours(double hours) throws impossibleHoursException {
+        if (hours > 168) {
+            throw new impossibleHoursException(hours);
+        }
         this.hours = hours;
     }
 
     /**
      * Default constructor
      */
-    public Employee() {
+    public Employee() throws impossibleHoursException {
         this("N/A", 0, 0, 0);
-
     }
 
     /**
@@ -60,10 +62,13 @@ public class Employee extends Person {
      * @param hourlySalary employee's hourly salary
      * @param hours        number of hours employee worked
      */
-    public Employee(String name, int age, double hourlySalary, double hours) {
+    public Employee(String name, int age, double hourlySalary, double hours) throws impossibleHoursException {
         super(name, age);
         this.hourlySalary = hourlySalary;
         this.hours = hours;
+        if (hours > 168) {
+            throw new impossibleHoursException(hours);
+        }
     }
 
     /**
@@ -117,6 +122,6 @@ public class Employee extends Person {
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println("\n.csv successfully created!");
+        System.out.println("\nemployee.csv successfully created!");
     }
 }

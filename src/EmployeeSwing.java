@@ -3,19 +3,25 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class FirstSwingWindow extends JFrame implements ActionListener {
+public class EmployeeSwing extends JFrame implements ActionListener {
     private static final int WIDTH = 400;
     private static final int HEIGHT = 600;
+    // Input fields
     private JTextField name;
     private JTextField age;
     private JTextField hourlySalary;
     private JTextField hours;
+    // Dynamic label
     private JLabel currentEmployee;
+    // Employee counting
     private int employeeCount = 1;
     private int totalEmployeeCount;
+    // Error message
+    private String inErrorMessage = "Incorrect Input Format. Please enter a positive, non-zero number, i.e. 4";
+    // Resulting list of employees
     private ArrayList<Employee> employees = new ArrayList<>();
 
-    public FirstSwingWindow() {
+    public EmployeeSwing() {
         super();
         setTitle("Employee Spreadsheet Creator");
         setSize(WIDTH, HEIGHT);
@@ -25,6 +31,7 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
         content.setLayout(new GridLayout(4,1));
         content.setBackground(Color.WHITE);
 
+        // Get user input re. how many employees
         JOptionPane in = new JOptionPane();
         while (true) {
             String strResponse = in.showInputDialog(
@@ -35,17 +42,24 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
             if (strResponse != null) {
                 try {
                     totalEmployeeCount = Integer.parseInt(strResponse);
-                    break;
+                    if (totalEmployeeCount == 0) {
+                        JOptionPane.showMessageDialog(null, inErrorMessage);
+                    }
+                    else {
+                        break;
+                    }
                 } catch (Exception NumberFormatException) {
-                    JOptionPane.showMessageDialog(
-                            null, "Incorrect Input Format. Please enter a positive, non-zero number, i.e. 4");
+                    JOptionPane.showMessageDialog(null, inErrorMessage);
                 }
             }
             else {
+                JOptionPane.showMessageDialog(
+                        null, "ok");
                 System.exit(0);
             }
         }
 
+        // Build panes for each input
         JPanel buttonPane1 = new JPanel();
         buttonPane1.setBackground(Color.LIGHT_GRAY);
         JLabel nameLabel = new JLabel("Name: ");
@@ -86,23 +100,27 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Enter")) {
+            try {
                 Employee newEmployee = new Employee(
                         name.getText(),
                         0,
                         Double.parseDouble(hourlySalary.getText()),
                         Double.parseDouble(hours.getText()));
-                employees.add(newEmployee);
-                employeeCount++;
-                clear();
+            employees.add(newEmployee);
+            employeeCount++;
+            clear();
             if (employeeCount > totalEmployeeCount) {
-                JOptionPane.showMessageDialog(null, "All employees successfully entered!\n" +
-                        "Results have been exported to employee.csv");
+                String successMessage = "All employees successfully entered!\n" +
+                        "Results have been exported to employee.csv";
+                JOptionPane.showMessageDialog(null, successMessage);
                 Employee.printSalaryReport(employees);
                 dispose();
-
             }
             else {
                 currentEmployee.setText(String.format("Employee %s of %s", employeeCount, totalEmployeeCount));
+            }}
+            catch (impossibleHoursException | NumberFormatException error) {
+                JOptionPane.showMessageDialog(null, String.format("ERROR: %s", error.getMessage()));
             }
         }
         else if (e.getActionCommand().equals("Clear")) {
@@ -114,6 +132,19 @@ public class FirstSwingWindow extends JFrame implements ActionListener {
 
     }
 
+    private boolean doubleTest(JTextField in) {
+        try {
+            Double.parseDouble(in.getText());
+            return true;
+        } catch (Exception NumberFormatException) {
+            return false;
+        }
+    }
+
+    /**
+     * Clears the user's input
+     * Helper method for actionPerformed
+     */
     private void clear() {
         this.name.setText(null);
         this.hourlySalary.setText(null);
