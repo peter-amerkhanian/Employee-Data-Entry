@@ -22,7 +22,10 @@ public class Employee extends Person {
      *
      * @param hourlySalary the employee's new hourly salary
      */
-    public void setHourlySalary(double hourlySalary) {
+    public void setHourlySalary(double hourlySalary) throws negativeNumberException {
+        if (hourlySalary < 0) {
+            throw new negativeNumberException(hourlySalary);
+        }
         this.hourlySalary = hourlySalary;
     }
 
@@ -40,17 +43,20 @@ public class Employee extends Person {
      *
      * @param hours the new number of hours worked for the employee
      */
-    public void setHours(double hours) throws impossibleHoursException {
+    public void setHours(double hours) throws impossibleHoursException, negativeNumberException {
         if (hours > 168) {
             throw new impossibleHoursException(hours);
+        } else if (hours < 0) {
+            throw new negativeNumberException(hours);
+        } else {
+            this.hours = hours;
         }
-        this.hours = hours;
     }
 
     /**
      * Default constructor
      */
-    public Employee() throws impossibleHoursException {
+    public Employee() throws impossibleHoursException, negativeNumberException {
         this("N/A", 0, 0, 0);
     }
 
@@ -62,12 +68,19 @@ public class Employee extends Person {
      * @param hourlySalary employee's hourly salary
      * @param hours        number of hours employee worked
      */
-    public Employee(String name, int age, double hourlySalary, double hours) throws impossibleHoursException {
+    public Employee(String name, int age, double hourlySalary, double hours)
+            throws impossibleHoursException, negativeNumberException {
         super(name, age);
         this.hourlySalary = hourlySalary;
         this.hours = hours;
         if (hours > 168) {
             throw new impossibleHoursException(hours);
+        }
+        if (hourlySalary < 0) {
+            throw new negativeNumberException(hourlySalary);
+        }
+        if (hours < 0) {
+            throw new negativeNumberException(hours);
         }
     }
 
