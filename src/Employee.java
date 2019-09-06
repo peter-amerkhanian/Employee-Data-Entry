@@ -71,17 +71,8 @@ public class Employee extends Person {
     public Employee(String name, int age, double hourlySalary, double hours)
             throws impossibleHoursException, negativeNumberException {
         super(name, age);
-        this.hourlySalary = hourlySalary;
-        this.hours = hours;
-        if (hours > 168) {
-            throw new impossibleHoursException(hours);
-        }
-        if (hourlySalary < 0) {
-            throw new negativeNumberException(hourlySalary);
-        }
-        if (hours < 0) {
-            throw new negativeNumberException(hours);
-        }
+        this.setHourlySalary(hourlySalary);
+        this.setHours(hours);
     }
 
     /**
@@ -133,8 +124,8 @@ public class Employee extends Person {
             fw.write(report);
             fw.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
-        System.out.println("\nemployee.csv successfully created!");
+        System.out.println("employee.csv successfully created!");
     }
 }

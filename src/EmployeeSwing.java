@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class EmployeeSwing extends JFrame implements ActionListener {
+    // GUI dimensions
     private static final int WIDTH = 400;
     private static final int HEIGHT = 600;
     // Input fields
@@ -23,15 +24,14 @@ public class EmployeeSwing extends JFrame implements ActionListener {
 
     public EmployeeSwing() {
         super();
-        // Initialize the window
+        // Initialize the GUI
         setTitle("Employee Spreadsheet Creator");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container content = getContentPane();
-        content.setLayout(new GridLayout(4,1));
+        content.setLayout(new GridLayout(4, 1));
         content.setBackground(Color.WHITE);
-
-        // Get user input re. how many employees
+        // Get user input for how many employees will be entered
         JOptionPane in = new JOptionPane();
         while (true) {
             String strResponse = in.showInputDialog(
@@ -44,17 +44,13 @@ public class EmployeeSwing extends JFrame implements ActionListener {
                     totalEmployeeCount = Integer.parseInt(strResponse);
                     if (totalEmployeeCount <= 0) {
                         JOptionPane.showMessageDialog(null, inErrorMessage);
-                    }
-                    else {
+                    } else {
                         break;
                     }
                 } catch (Exception NumberFormatException) {
                     JOptionPane.showMessageDialog(null, inErrorMessage);
                 }
-            }
-            else {
-                JOptionPane.showMessageDialog(
-                        null, "ok");
+            } else {
                 System.exit(0);
             }
         }
@@ -88,11 +84,11 @@ public class EmployeeSwing extends JFrame implements ActionListener {
         enter.addActionListener(this);
         JButton clear = new JButton("Clear");
         clear.addActionListener(this);
-        currentEmployee = new JLabel(String.format("(Employee %s of %s)", employeeCount, totalEmployeeCount));
+        currentEmployee = new JLabel(String.format("Employee %s of %s", employeeCount, totalEmployeeCount));
         buttonPane4.add(enter);
         buttonPane4.add(clear);
         buttonPane4.add(currentEmployee);
-
+        // Add all panes to the GUI
         content.add(buttonPane1);
         content.add(buttonPane2);
         content.add(buttonPane3);
@@ -122,23 +118,12 @@ public class EmployeeSwing extends JFrame implements ActionListener {
             } catch (impossibleHoursException | NumberFormatException | negativeNumberException error) {
                 JOptionPane.showMessageDialog(null, String.format("ERROR: %s", error.getMessage()));
             }
-        }
-        else if (e.getActionCommand().equals("Clear")) {
+        } else if (e.getActionCommand().equals("Clear")) {
             clear();
-        }
-        else {
+        } else {
             System.out.println("Button Error");
         }
 
-    }
-
-    private boolean doubleTest(JTextField in) {
-        try {
-            Double.parseDouble(in.getText());
-            return true;
-        } catch (Exception NumberFormatException) {
-            return false;
-        }
     }
 
     /**
