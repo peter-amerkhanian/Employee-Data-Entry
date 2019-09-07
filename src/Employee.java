@@ -108,23 +108,31 @@ public class Employee extends Person {
                 Double.compare(employee.getHours(), this.getHours()) == 0;
     }
 
+    /**
+     * Takes an ArrayList of Employee objects,
+     * calculates weekly pay for each employee,
+     * prints Employee Name, Salary, Hours, Weekly Payfor each employee,
+     * saves that to employee.csv
+     *
+     * @param employees an Arraylist of Employee objects
+     */
     public static void printSalaryReport(ArrayList<Employee> employees) {
-        String report = "Employee Name, Salary, Hours, Weekly Pay\n";
+        StringBuilder report = new StringBuilder("Employee Name, Salary, Hours, Weekly Pay\n");
         System.out.print(report);
-        for (Employee employee: employees) {
+        for (Employee employee : employees) {
             Double weeklyPay = employee.getHourlySalary() * employee.getHours();
             String s = "%s, %s, %s, %s\n";
             String row = String.format(
                     s, employee.getName(), employee.getHourlySalary(), employee.getHours(), weeklyPay);
             System.out.print(row);
-            report += row;
+            report.append(row);
         }
         try {
             FileWriter fw = new FileWriter("employee.csv");
-            fw.write(report);
+            fw.write(report.toString());
             fw.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error. File could not be written" + e.getMessage());
         }
         System.out.println("employee.csv successfully created!");
     }

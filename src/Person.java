@@ -19,7 +19,7 @@ public abstract class Person {
      *
      * @param age the new age for the person
      */
-    public void setAge(int age) throws negativeNumberException{
+    public void setAge(int age) throws negativeNumberException {
         if (age < 0) {
             throw new negativeNumberException(age);
         }
@@ -50,7 +50,7 @@ public abstract class Person {
      * @param name name of person
      * @param age  age of person
      */
-    public Person(String name, int age) throws negativeNumberException{
+    public Person(String name, int age) throws negativeNumberException {
         this.setName(name);
         this.setAge(age);
     }
